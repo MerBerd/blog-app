@@ -1,6 +1,12 @@
 package repositories
 
+import (
+	"github.com/MerBerd/blog-app/internal/models"
+	"github.com/jmoiron/sqlx"
+)
+
 type Authorization interface {
+	CreateUser(user models.User) (int, error)
 }
 
 type Article interface {
@@ -15,6 +21,8 @@ type Repository struct {
 	Comment
 }
 
-func NewRepository() *Repository {
-	return &Repository{}
+func NewRepository(db *sqlx.DB) *Repository {
+	return &Repository{
+		Authorization: NewAuthPostgres(db),
+	}
 }

@@ -1,8 +1,12 @@
 package services
 
-import "github.com/MerBerd/blog-app/internal/repositories"
+import (
+	"github.com/MerBerd/blog-app/internal/models"
+	"github.com/MerBerd/blog-app/internal/repositories"
+)
 
 type Authorization interface {
+	CreateUser(user models.User) (int, error)
 }
 
 type Article interface {
@@ -18,5 +22,7 @@ type Service struct {
 }
 
 func NewService(repos *repositories.Repository) *Service {
-	return &Service{}
+	return &Service{
+		Authorization: NewAuthService(repos.Authorization),
+	}
 }
