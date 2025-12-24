@@ -11,6 +11,9 @@ type Authorization interface {
 }
 
 type Article interface {
+	Create(userId int, list models.Article) (int, error)
+	GetAll(userId int) ([]models.Article, error)
+	GetById(userId, id int) (models.Article, error)
 }
 
 type Comment interface {
@@ -25,5 +28,6 @@ type Repository struct {
 func NewRepository(db *sqlx.DB) *Repository {
 	return &Repository{
 		Authorization: NewAuthPostgres(db),
+		Article:       NewArticlePostgres(db),
 	}
 }

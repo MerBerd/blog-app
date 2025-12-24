@@ -1,15 +1,15 @@
 package models
 
 type Article struct {
-	Id        int    `json:"_"`
-	AuthorId  int    `json:"author_id"`
-	Title     string `json:"title"`
-	Content   string `json:"content"`
-	CreatedAt string `json:"created_at"`
+	Id        int    `json:"id" db:"id"`
+	AuthorId  int    `json:"-" db:"author_id"`
+	Title     string `json:"title" db:"title" binding:"required"`
+	Content   string `json:"content" db:"content" binding:"required"`
+	CreatedAt string `json:"created_at" db:"created_at"`
 }
 
 type Attachment struct {
-	Id         int    `json:"_"`
+	Id         int    `json:"id"`
 	ArticleId  int    `json:"article_id"`
 	FilePath   string `json:"file_path"`
 	UploadedAt string `json:"uploaded_at"`
