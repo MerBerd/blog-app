@@ -57,20 +57,19 @@ func (h *Handler) getAllArticles(c *gin.Context) {
 }
 
 func (h *Handler) getArticleById(c *gin.Context) {
-
 	userId, err := h.getUserId(c)
 	if err != nil {
 		NewErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	id, err := strconv.Atoi(c.Param("id"))
+	articleId, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		NewErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
-	article, err := h.services.Article.GetById(userId, id)
+	article, err := h.services.Article.GetById(userId, articleId)
 	if err != nil {
 		NewErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
@@ -80,10 +79,53 @@ func (h *Handler) getArticleById(c *gin.Context) {
 
 }
 
-func (h *Handler) changeArticle(c *gin.Context) {
+func (h *Handler) updateArticle(c *gin.Context) {
+	userId, err := h.getUserId(c)
+	if err != nil {
+		NewErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	articleId, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		NewErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	var input models.UpdateArticleInput
+
+	if err := c.BindJSON(&input); err != nil {
+		NewErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	if err := h.services.Article.Update(userId, articleId, input); err != nil {
+		NewErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, statusResponse{"ok"})
 
 }
 
 func (h *Handler) deleteArticle(c *gin.Context) {
+	userId, err := h.getUserId(c)
+	if err != nil {
+		NewErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	articleId, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		NewErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	if err := h.services.Article.Delete(userId, articleId); err != nil {
+		NewErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, statusResponse{"ok"})
 
 }

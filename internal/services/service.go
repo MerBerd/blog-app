@@ -15,9 +15,13 @@ type Article interface {
 	Create(userId int, list models.Article) (int, error)
 	GetAll(userId int) ([]models.Article, error)
 	GetById(userId, id int) (models.Article, error)
+	Update(userId, id int, input models.UpdateArticleInput) error
+	Delete(userId, articleId int) error
 }
 
 type Comment interface {
+	GetAll(articleId int) ([]models.Comment, error)
+	Create(userId, articleId int, input models.Comment) (int, error)
 }
 
 type Service struct {
@@ -30,5 +34,6 @@ func NewService(repos *repositories.Repository) *Service {
 	return &Service{
 		Authorization: NewAuthService(repos.Authorization),
 		Article:       NewArticleService(repos.Article),
+		Comment:       NewCommentService(repos.Comment),
 	}
 }

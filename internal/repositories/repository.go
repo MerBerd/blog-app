@@ -14,9 +14,13 @@ type Article interface {
 	Create(userId int, list models.Article) (int, error)
 	GetAll(userId int) ([]models.Article, error)
 	GetById(userId, id int) (models.Article, error)
+	Update(userId, articleId int, input models.UpdateArticleInput) error
+	Delete(userId, articleId int) error
 }
 
 type Comment interface {
+	GetAll(articleId int) ([]models.Comment, error)
+	Create(userId, articleId int, input models.Comment) (int, error)
 }
 
 type Repository struct {
@@ -29,5 +33,6 @@ func NewRepository(db *sqlx.DB) *Repository {
 	return &Repository{
 		Authorization: NewAuthPostgres(db),
 		Article:       NewArticlePostgres(db),
+		Comment:       NewCommentsPostgres(db),
 	}
 }

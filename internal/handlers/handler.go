@@ -29,7 +29,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			articles.POST("/", h.createArticle)
 			articles.GET("/", h.getAllArticles)
 			articles.GET("/:id", h.getArticleById)
-			articles.PATCH("/:id", h.changeArticle)
+			articles.PATCH("/:id", h.updateArticle)
 			articles.DELETE("/:id", h.deleteArticle)
 
 			comments := articles.Group("/:id/comments")
