@@ -111,8 +111,7 @@ func (r *ArticlePostgres) Delete(userId, articleId int) error {
 
 	query := fmt.Sprintf("SELECT EXISTS (SELECT 1 FROM %s WHERE author_id=$1)", articlesTable)
 
-	err := r.db.Get(&exists, query, userId)
-	if err != nil {
+	if err := r.db.Get(&exists, query, userId); err != nil {
 		return err
 	}
 

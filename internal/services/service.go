@@ -22,6 +22,9 @@ type Article interface {
 type Comment interface {
 	GetAll(articleId int) ([]models.Comment, error)
 	Create(userId, articleId int, input models.Comment) (int, error)
+	GetById(commentId int) (models.Comment, error)
+	Update(userId, commentId int, input models.UpdateCommentInput) error
+	Delete(userId, commentId int) error
 }
 
 type Service struct {

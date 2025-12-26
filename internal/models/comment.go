@@ -9,3 +9,7 @@ type Comment struct {
 	ArticleID int       `db:"article_id" json:"-"`
 	CreatedAt time.Time `db:"created_at" json:"created_at"`
 }
+
+type UpdateCommentInput struct {
+	Content *string `json:"content"`
+}
